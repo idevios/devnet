@@ -1,0 +1,6 @@
+framework module Pods_devnet {
+  umbrella header "Pods-devnet-umbrella.h"
+
+  export *
+  module * { export * }
+}
