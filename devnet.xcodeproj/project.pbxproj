@@ -176,6 +176,7 @@
 					819D967A1D6F29E3006AD1D7 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = J57HZNN3MN;
+						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -401,6 +402,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 71F24CFA202E3547E8DD7F2A /* Pods-devnet.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = devnet/devnet.entitlements;
 				DEVELOPMENT_TEAM = J57HZNN3MN;
@@ -416,6 +418,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 69CC8297DA96F68D77EA9A46 /* Pods-devnet.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = devnet/devnet.entitlements;
 				DEVELOPMENT_TEAM = J57HZNN3MN;
