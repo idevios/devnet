@@ -10,6 +10,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Firebase
+import SwiftKeychainWrapper
 
 class SignInVC: UIViewController {
     
@@ -25,10 +26,11 @@ class SignInVC: UIViewController {
         super.viewDidLoad()
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if let _ = KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID) {
+            performSegue(withIdentifier: "goToFeed", sender: nil)
+        }
     }
     
     // MARK: - @IBActions
@@ -57,6 +59,9 @@ class SignInVC: UIViewController {
                 print("JEDI: Unable to authentication with Firebase: \(error)")
             } else {
                 print("JEDI: Successfully authentication with Firebase. ")
+                if let user = user {
+                    self.completeSignIn(uid: user.uid)
+                }
             }
         })
     }
@@ -66,12 +71,18 @@ class SignInVC: UIViewController {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error == nil {
                     print("JEDI: Successfully authenticated by email with Firebase")
+                    if let user = user {
+                        self.completeSignIn(uid: user.uid)
+                    }
                 } else {
                     FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
                         if error != nil {
                             print("JEDI: Unable to create user and auth by email with Firebase: \(error)")
                         } else {
                             print("JEDI: Successfully created user and authenticated by email with Firebase. ")
+                            if let user = user {
+                                self.completeSignIn(uid: user.uid)
+                            }
                         }
                     })
                 }
@@ -79,6 +90,16 @@ class SignInVC: UIViewController {
         }
     }
     
+    func completeSignIn(uid: String) {
+        let keychainResult = KeychainWrapper.defaultKeychainWrapper().setString(uid, forKey: KEY_UID)
+        if keychainResult {
+            print("JEDI: Data saved to keychain - \(keychainResult)")
+            performSegue(withIdentifier: "goToFeed", sender: nil)
+        } else {
+            print("JEDI: Cannot save data to keychain - \(keychainResult)")
+        }
+        
+    }
     
 }
 
