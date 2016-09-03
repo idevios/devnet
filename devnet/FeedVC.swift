@@ -31,7 +31,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 for snap in snapshots {
-                    print("SNAP: \(snap)")
+                    //print("SNAP: \(snap)")
                     
                     if let postDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
