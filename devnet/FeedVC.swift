@@ -12,8 +12,13 @@ import SwiftKeychainWrapper
 
 class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    //MARK: - @IBOutlets
+    
     @IBOutlet weak var tableView: UITableView!
 
+    //MARK: - @Properties
+    
+    //MARK: - View Initialize
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,12 +26,16 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
         
     }
+    
+    //MARK: - @IBActions
 
     @IBAction func signOutButtonPressed(_ sender: AnyObject) {
         let _ = KeychainWrapper.defaultKeychainWrapper().removeObjectForKey(KEY_UID)
         try! FIRAuth.auth()?.signOut()
         self.dismiss(animated: true, completion: nil)
     }
+    
+    //MARK: - Functions
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
