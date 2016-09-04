@@ -15,10 +15,18 @@ class PostedCell: UITableViewCell {
     @IBOutlet weak var postedImage: UIImageView!
     @IBOutlet weak var captionTextView: UITextView!
     @IBOutlet weak var likesLabel: UILabel!
+    
+    var post: Post!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    
+    func configureCell(post: Post) {
+        self.post = post
+        self.captionTextView.text = post.caption
+        self.likesLabel.text = "\(post.likes)"
     }
 
 }
