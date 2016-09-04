@@ -10,25 +10,32 @@ import UIKit
 import Firebase
 import SwiftKeychainWrapper
 
-class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     //MARK: - @IBOutlets
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var addImageImageView: UIImageView!
 
     //MARK: - @Properties
     
     var posts = [Post]()
+    var imagePicker: UIImagePickerController!
     
     //MARK: - View Initialize
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // tableView Delegate
         tableView.delegate = self
         tableView.dataSource = self
         
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        
+        // DataService
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
-            
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 for snap in snapshots {
                     //print("SNAP: \(snap)")
@@ -38,7 +45,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                         let post = Post(postKey: key, postData: postDict)
                         self.posts.append(post)
                     }
-                    
                 }
             }
             self.tableView.reloadData()
@@ -54,8 +60,23 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: - Functions
+    @IBAction func addImageButtonPressed(_ sender: AnyObject) {
+        present(imagePicker, animated: true, completion: nil)
+    }
     
+    
+    //MARK: - UIImagePickerViewDelegate Functions
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            addImageImageView.image = image
+        } else {
+            print("JEDI: A valid image wasn't selected. ")
+        }
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: - UITableViewDelegate Conform
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

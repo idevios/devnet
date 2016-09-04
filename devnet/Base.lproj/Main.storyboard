@@ -168,12 +168,16 @@
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fWB-QG-dbI">
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="5Rd-UP-JoO" customClass="CircleImageView" customModule="devnet" customModuleProvider="target">
+                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="5Rd-UP-JoO" customClass="CircleImageView" customModule="devnet" customModuleProvider="target">
                                                 <color key="backgroundColor" red="0.0" green="0.51372549020000002" blue="0.56078431370000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="49" id="Csx-jd-nwU"/>
                                                     <constraint firstAttribute="width" constant="49" id="vbr-ez-KFk"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="xPj-qI-BAa" appends="YES" id="P62-wi-LF1"/>
+                                                </connections>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tap to add caption" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="izH-T2-XTj" customClass="FancyField" customModule="devnet" customModuleProvider="target">
                                                 <nil key="textColor"/>
@@ -307,6 +311,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addImageImageView" destination="5Rd-UP-JoO" id="4BC-gZ-mhQ"/>
                         <outlet property="tableView" destination="o6C-ds-05T" id="Cjw-d6-Iqx"/>
                     </connections>
                 </viewController>
@@ -314,6 +319,11 @@
                 <tapGestureRecognizer id="00p-Tn-2SV">
                     <connections>
                         <action selector="signOutButtonPressed:" destination="cya-Si-9QE" id="ebC-Nh-uLX"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="xPj-qI-BAa">
+                    <connections>
+                        <action selector="addImageButtonPressed:" destination="cya-Si-9QE" id="Tb1-sv-5DH"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
