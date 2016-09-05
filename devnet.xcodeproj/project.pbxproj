@@ -100,12 +100,12 @@
 		8176A24B1D6F2CEF00F2FFC9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8156AC591D79C50A009BCCDA /* PostedCell.swift */,
 				817219751D7475A00072303F /* FancyView.swift */,
 				8172197A1D747B480072303F /* RoundFbButton.swift */,
 				8172197C1D747FDD0072303F /* FancyField.swift */,
 				8172197E1D7481C90072303F /* FancyButton.swift */,
 				8156AC571D79B63C009BCCDA /* CircleImageView.swift */,
-				8156AC591D79C50A009BCCDA /* PostedCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
