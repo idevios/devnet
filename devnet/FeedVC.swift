@@ -80,17 +80,39 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             let imageUid = NSUUID().uuidString
             let imageMetadata = FIRStorageMetadata()
             imageMetadata.contentType = "image/jpeg"
-            
             DataService.ds.REF_POST_IMAGES.child(imageUid).put(imageData, metadata: imageMetadata, completion: { (metadata, error) in
                 if error != nil {
                     print("JEDI: Unable to upload image to Firebase storage. - \(error)")
                 } else {
                     print("JEDI: Image has been upload to Firebase storage. ")
                     let downloadUrl = metadata?.downloadURL()?.absoluteString
+                    if let url = downloadUrl {
+                        self.postToFirebase(imageUrl: url)
+                    }
                 }
             })
         }
-
+    }
+    
+    //MARK: - Functions
+    
+    func postToFirebase(imageUrl: String) {
+        let post: Dictionary<String, AnyObject> = [
+            "caption": captionTextField.text!,
+            "imageUrl": imageUrl,
+            "likes": 0
+        ]
+        
+        self.posts.removeAll()
+        
+        let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
+        firebasePost.setValue(post)
+        
+        captionTextField.text = ""
+        isImageSelected = false
+        addImageImageView.image = UIImage(named: "add-image")
+        
+        tableView.reloadData()
     }
     
     //MARK: - UIImagePickerViewDelegate Functions
@@ -123,10 +145,9 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 cell.configureCell(post: post)
                 return cell
             }
-        }else {
-            return PostedCell()
+        } else {
+            return UITableViewCell()
         }
-        //return PostedCell()
     }
 
 }
