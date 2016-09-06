@@ -39,10 +39,10 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         // DataService
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
+            self.posts.removeAll()
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 for snap in snapshots {
                     //print("SNAP: \(snap)")
-                    
                     if let postDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
                         let post = Post(postKey: key, postData: postDict)
@@ -103,7 +103,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             "likes": 0
         ]
         
-        self.posts.removeAll()
+        //self.posts.removeAll()
         
         let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
         firebasePost.setValue(post)

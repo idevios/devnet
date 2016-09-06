@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseStorage
+import SwiftKeychainWrapper
 
 let DB_BASE = FIRDatabase.database().reference()
 let STORAGE_BASE = FIRStorage.storage().reference()
@@ -30,6 +31,11 @@ class DataService {
     }
     var REF_USERS: FIRDatabaseReference {
         return _REF_USERS
+    }
+    var REF_USER_CURRENT: FIRDatabaseReference {
+        let uid = KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID)
+        let user = REF_USERS.child(uid!)
+        return user
     }
     
     // MARK: - Storage References

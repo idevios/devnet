@@ -290,6 +290,7 @@
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <connections>
                                             <outlet property="captionTextView" destination="1T3-pY-7mx" id="JAn-JJ-3wQ"/>
+                                            <outlet property="likeImage" destination="njH-q0-glc" id="5XI-rV-Ibh"/>
                                             <outlet property="likesLabel" destination="cEK-Op-Jy6" id="DuN-kw-TVA"/>
                                             <outlet property="postedImage" destination="eG9-55-Nrw" id="SWb-3s-wRo"/>
                                             <outlet property="profileImage" destination="t7t-tx-YyG" id="Ume-hf-9cx"/>
