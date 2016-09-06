@@ -16,11 +16,13 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addImageImageView: UIImageView!
+    @IBOutlet weak var captionTextField: FancyField!
 
     //MARK: - @Properties
     
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
+    var isImageSelected: Bool = false
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
     
     //MARK: - View Initialize
@@ -65,12 +67,37 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         present(imagePicker, animated: true, completion: nil)
     }
     
+    @IBAction func postButtonPressed(_ sender: AnyObject) {
+        guard let caption = captionTextField.text, caption != "" else {
+            print("JEDI: Caption must be entered. ")
+            return
+        }
+        guard let image = addImageImageView.image, isImageSelected == true else {
+            print("JEDI: Image must be selected. ")
+            return
+        }
+        if let imageData = UIImageJPEGRepresentation(image, 0.2) {
+            let imageUid = NSUUID().uuidString
+            let imageMetadata = FIRStorageMetadata()
+            imageMetadata.contentType = "image/jpeg"
+            
+            DataService.ds.REF_POST_IMAGES.child(imageUid).put(imageData, metadata: imageMetadata, completion: { (metadata, error) in
+                if error != nil {
+                    print("JEDI: Unable to upload image to Firebase storage. - \(error)")
+                } else {
+                    print("JEDI: Image has been upload to Firebase storage. ")
+                    let downloadUrl = metadata?.downloadURL()?.absoluteString
+                }
+            })
+        }
+
+    }
     
     //MARK: - UIImagePickerViewDelegate Functions
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             addImageImageView.image = image
+            isImageSelected = true
         } else {
             print("JEDI: A valid image wasn't selected. ")
         }
@@ -87,11 +114,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let post = posts[indexPath.row]
-        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PostedCell") as? PostedCell {
-            
             if let image = FeedVC.imageCache.object(forKey: post.imageUrl) {
                 cell.configureCell(post: post, image: image)
                 return cell
@@ -99,7 +123,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 cell.configureCell(post: post)
                 return cell
             }
-            
         }else {
             return PostedCell()
         }
