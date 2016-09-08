@@ -7,6 +7,88 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--UsernameVC-->
+        <scene sceneID="QAb-Oh-6PD">
+            <objects>
+                <viewController id="mJ2-ub-oxb" customClass="UsernameVC" customModule="devnet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ps7-rY-qEF"/>
+                        <viewControllerLayoutGuide type="bottom" id="Iew-KX-eOr"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jUf-xZ-vQ2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jaw-Lv-dWC">
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uc9-IX-QS9">
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.73725490199999999" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Uc9-IX-QS9" firstAttribute="centerY" secondItem="jaw-Lv-dWC" secondAttribute="centerY" id="KHw-mB-3w8"/>
+                                    <constraint firstAttribute="height" constant="50" id="kyc-j3-IeR"/>
+                                    <constraint firstItem="Uc9-IX-QS9" firstAttribute="centerX" secondItem="jaw-Lv-dWC" secondAttribute="centerX" id="yNe-QM-auZ"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QUZ-Ef-b3s" customClass="FancyButton" customModule="devnet" customModuleProvider="target">
+                                <color key="backgroundColor" red="0.84705882349999995" green="0.26274509800000001" blue="0.08235294118" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="DeQ-pW-YOD"/>
+                                    <constraint firstAttribute="width" constant="170" id="LjE-q3-xAg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="submitButtonPressed:" destination="mJ2-ub-oxb" eventType="touchUpInside" id="8MS-54-vOp"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gmW-PG-TqM">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="vFf-t0-Lmd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WH6-JG-E6c" customClass="FancyField" customModule="devnet" customModuleProvider="target">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="e3R-7y-Jil"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="QUZ-Ef-b3s" firstAttribute="centerX" secondItem="jUf-xZ-vQ2" secondAttribute="centerX" id="1tb-Av-yeK"/>
+                            <constraint firstItem="QUZ-Ef-b3s" firstAttribute="top" secondItem="WH6-JG-E6c" secondAttribute="bottom" constant="33" id="Cli-uC-Sb3"/>
+                            <constraint firstItem="WH6-JG-E6c" firstAttribute="top" secondItem="gmW-PG-TqM" secondAttribute="bottom" constant="15" id="OBB-jp-vv5"/>
+                            <constraint firstItem="gmW-PG-TqM" firstAttribute="top" secondItem="jaw-Lv-dWC" secondAttribute="bottom" constant="65" id="Off-s1-y02"/>
+                            <constraint firstItem="WH6-JG-E6c" firstAttribute="leading" secondItem="jUf-xZ-vQ2" secondAttribute="leadingMargin" id="e4a-Oo-oje"/>
+                            <constraint firstItem="gmW-PG-TqM" firstAttribute="trailing" secondItem="jUf-xZ-vQ2" secondAttribute="trailingMargin" id="i5J-0L-YhF"/>
+                            <constraint firstItem="jaw-Lv-dWC" firstAttribute="top" secondItem="jUf-xZ-vQ2" secondAttribute="top" id="kOr-Nn-AfV"/>
+                            <constraint firstItem="jaw-Lv-dWC" firstAttribute="leading" secondItem="jUf-xZ-vQ2" secondAttribute="leading" id="oTa-ta-IzB"/>
+                            <constraint firstItem="gmW-PG-TqM" firstAttribute="leading" secondItem="jUf-xZ-vQ2" secondAttribute="leadingMargin" id="obH-7B-cph"/>
+                            <constraint firstItem="WH6-JG-E6c" firstAttribute="trailing" secondItem="jUf-xZ-vQ2" secondAttribute="trailingMargin" id="ww7-3W-uXx"/>
+                            <constraint firstAttribute="trailing" secondItem="jaw-Lv-dWC" secondAttribute="trailing" id="zjy-9l-jM9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="errorLabel" destination="gmW-PG-TqM" id="aj8-7B-M17"/>
+                        <outlet property="usernameTextField" destination="WH6-JG-E6c" id="c8b-B6-rSs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4oO-a7-d0R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="927" y="-560"/>
+        </scene>
         <!--Sign InVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -118,6 +200,7 @@
                         <outlet property="emailTextField" destination="gyD-eL-2JV" id="Lvp-8r-0Iu"/>
                         <outlet property="passwordTextField" destination="maP-Lt-IEl" id="9cb-fc-bLL"/>
                         <segue destination="cya-Si-9QE" kind="show" identifier="goToFeed" id="Syr-b3-xlx"/>
+                        <segue destination="mJ2-ub-oxb" kind="show" identifier="goToUsername" id="i3S-3k-w9Q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -332,7 +415,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="880.79999999999995" y="138.98050974512745"/>
+            <point key="canvasLocation" x="927" y="139"/>
         </scene>
     </scenes>
     <resources>

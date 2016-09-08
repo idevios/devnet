@@ -94,6 +94,8 @@ class SignInVC: UIViewController {
     }
     
     func completeSignIn(uid: String, userData: Dictionary<String, String>) {
+        //performSegue(withIdentifier: "goToUsername", sender: nil)
+        
         DataService.ds.createFirebaseDBUser(uid: uid, userData: userData)
         let keychainResult = KeychainWrapper.defaultKeychainWrapper().setString(uid, forKey: KEY_UID)
         if keychainResult {
@@ -102,7 +104,6 @@ class SignInVC: UIViewController {
         } else {
             print("JEDI: Cannot save data to keychain - \(keychainResult)")
         }
-        
     }
     
 }

@@ -14,6 +14,7 @@ class Post {
     private var _caption: String!
     private var _imageUrl: String!
     private var _likes: Int!
+    private var _username: String!
     private var _postKey: String!
     private var _postRef: FIRDatabaseReference!
     
@@ -27,6 +28,10 @@ class Post {
     
     var likes: Int {
         return _likes
+    }
+    
+    var username: String {
+        return _username
     }
     
     var postKey: String {
