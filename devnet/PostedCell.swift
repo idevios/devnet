@@ -66,7 +66,7 @@ class PostedCell: UITableViewCell {
                     if let imageData = data {
                         if let image = UIImage(data: imageData) {
                             self.postedImage.image = image
-                            FeedVC.imageCache.setObject(image, forKey: post.imageUrl)
+                            FeedVC.imageCache.setObject(image, forKey: post.imageUrl as NSString)
                         }
                     }
                 }

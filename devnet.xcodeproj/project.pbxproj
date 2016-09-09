@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8104F9D31D792B5600DD5ED7 /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8104F9D21D792B5600DD5ED7 /* FeedVC.swift */; };
 		812512381D8198D800517980 /* UsernameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812512371D8198D800517980 /* UsernameVC.swift */; };
+		8125123A1D819EDE00517980 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812512391D819EDE00517980 /* User.swift */; };
 		814CC5FF1D7B0AEC00FB23C9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CC5FE1D7B0AEC00FB23C9 /* Post.swift */; };
 		8156AC581D79B63C009BCCDA /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156AC571D79B63C009BCCDA /* CircleImageView.swift */; };
 		8156AC5A1D79C50A009BCCDA /* PostedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156AC591D79C50A009BCCDA /* PostedCell.swift */; };
@@ -34,6 +35,7 @@
 		8104F9D21D792B5600DD5ED7 /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		8118E2611D77266900B31532 /* devnet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = devnet.entitlements; sourceTree = "<group>"; };
 		812512371D8198D800517980 /* UsernameVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameVC.swift; sourceTree = "<group>"; };
+		812512391D819EDE00517980 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		814CC5FE1D7B0AEC00FB23C9 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		8156AC571D79B63C009BCCDA /* CircleImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		8156AC591D79C50A009BCCDA /* PostedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostedCell.swift; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				814CC5FE1D7B0AEC00FB23C9 /* Post.swift */,
+				812512391D819EDE00517980 /* User.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				814CC5FF1D7B0AEC00FB23C9 /* Post.swift in Sources */,
 				819D967F1D6F29E3006AD1D7 /* AppDelegate.swift in Sources */,
 				812512381D8198D800517980 /* UsernameVC.swift in Sources */,
+				8125123A1D819EDE00517980 /* User.swift in Sources */,
 				8172197F1D7481C90072303F /* FancyButton.swift in Sources */,
 				81C894DC1D7AD4E200016369 /* DataService.swift in Sources */,
 				8104F9D31D792B5600DD5ED7 /* FeedVC.swift in Sources */,

@@ -21,6 +21,8 @@ class SignInVC: UIViewController {
     
     // MARK: - @Properties
     
+    var userInfo: User!
+    
     // MARK: - View Initialize
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +30,7 @@ class SignInVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if let _ = KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_UID) {
+        if let _ = KeychainWrapper.defaultKeychainWrapper().stringForKey(KEY_USERNAME) {
             performSegue(withIdentifier: "goToFeed", sender: nil)
         }
     }
@@ -61,7 +63,8 @@ class SignInVC: UIViewController {
                 print("JEDI: Successfully authentication with Firebase. ")
                 if let user = user {
                     let userData = ["provider": credential.provider]
-                    self.completeSignIn(uid: user.uid, userData: userData)
+                    self.userInfo = User(uid: user.uid, userData: userData)
+                    self.chooseUsername(user: self.userInfo)
                 }
             }
         })
@@ -74,9 +77,11 @@ class SignInVC: UIViewController {
                     print("JEDI: Successfully authenticated by email with Firebase")
                     if let user = user {
                         let userData = ["provider": user.providerID]
-                        self.completeSignIn(uid: user.uid, userData: userData)
+                        self.userInfo = User(uid: user.uid, userData: userData)
+                        self.chooseUsername(user: self.userInfo)
                     }
                 } else {
+                    // CREATE
                     FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
                         if error != nil {
                             print("JEDI: Unable to create user and auth by email with Firebase: \(error)")
@@ -84,7 +89,8 @@ class SignInVC: UIViewController {
                             print("JEDI: Successfully created user and authenticated by email with Firebase. ")
                             if let user = user {
                                 let userData = ["provider": user.providerID]
-                                self.completeSignIn(uid: user.uid, userData: userData)
+                                self.userInfo = User(uid: user.uid, userData: userData)
+                                self.chooseUsername(user: self.userInfo)
                             }
                         }
                     })
@@ -93,23 +99,43 @@ class SignInVC: UIViewController {
         }
     }
     
-    func completeSignIn(uid: String, userData: Dictionary<String, String>) {
-        //performSegue(withIdentifier: "goToUsername", sender: nil)
+    func chooseUsername(user: User) {
         
-        DataService.ds.createFirebaseDBUser(uid: uid, userData: userData)
-        let keychainResult = KeychainWrapper.defaultKeychainWrapper().setString(uid, forKey: KEY_UID)
+        let keychainResult = KeychainWrapper.defaultKeychainWrapper().setString(user.uid, forKey: KEY_UID)
         if keychainResult {
             print("JEDI: Data saved to keychain - \(keychainResult)")
-            performSegue(withIdentifier: "goToFeed", sender: nil)
+            
+            let userRef = DataService.ds.REF_USERS.child(user.uid).child("username")
+            userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.value is NSNull {
+                    print("JEDI: BEFORE SEGUE - \(user.uid)")
+                    self.performSegue(withIdentifier: "goToUsername", sender: user)
+                } else {
+                    if let usernameDict = snapshot.value as? Dictionary<String, String> {
+                        if let username = usernameDict["username"] {
+                            print("JEDI: - \(username)")
+                            let _ = KeychainWrapper.defaultKeychainWrapper().setString(username, forKey: KEY_USERNAME)
+                            self.performSegue(withIdentifier: "goToFeed", sender: nil)
+                        }
+                    }
+                }
+            })
         } else {
             print("JEDI: Cannot save data to keychain - \(keychainResult)")
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToUsername" {
+            print("JEDI: Here for segue to username preparation")
+            if let destination = segue.destination as? UsernameVC {
+                if let user = sender as? User {
+                    print("JEDI: BEFORE SET DESTINATION - \(user.uid)")
+                    destination.user = user
+                }
+            }
+        }
+    }
+
 }
-
-
-
-
-
 

@@ -106,13 +106,13 @@ public class KeychainWrapper {
         keychainQueryDictionary[SecReturnAttributes] = kCFBooleanTrue
 
             // Search
-        let status = withUnsafeMutablePointer(&result) {
-            SecItemCopyMatching(keychainQueryDictionary, UnsafeMutablePointer($0))
+        let status = withUnsafeMutablePointer(to: &result) {
+            SecItemCopyMatching(keychainQueryDictionary as CFDictionary, UnsafeMutablePointer($0))
         }
 
         if status == noErr {
-            if let resultsDictionary = result as? [String:AnyObject], accessibilityAttrValue = resultsDictionary[SecAttrAccessible] as? String {
-                return KeychainItemAccessibility.accessibilityForAttributeValue(accessibilityAttrValue)
+            if let resultsDictionary = result as? [String:AnyObject], let accessibilityAttrValue = resultsDictionary[SecAttrAccessible] as? String {
+                return KeychainItemAccessibility.accessibilityForAttributeValue(accessibilityAttrValue as CFString)
             }
         }
         
@@ -196,8 +196,8 @@ public class KeychainWrapper {
         keychainQueryDictionary[SecReturnData] = kCFBooleanTrue
         
         // Search
-        let status = withUnsafeMutablePointer(&result) {
-            SecItemCopyMatching(keychainQueryDictionary, UnsafeMutablePointer($0))
+        let status = withUnsafeMutablePointer(to: &result) {
+            SecItemCopyMatching(keychainQueryDictionary as CFDictionary, UnsafeMutablePointer($0))
         }
         
         return status == noErr ? result as? Data : nil
@@ -220,8 +220,8 @@ public class KeychainWrapper {
         keychainQueryDictionary[SecReturnPersistentRef] = kCFBooleanTrue
         
         // Search
-        let status = withUnsafeMutablePointer(&result) {
-            SecItemCopyMatching(keychainQueryDictionary, UnsafeMutablePointer($0))
+        let status = withUnsafeMutablePointer(to: &result) {
+            SecItemCopyMatching(keychainQueryDictionary as CFDictionary, UnsafeMutablePointer($0))
         }
         
         return status == noErr ? result as? Data : nil
@@ -280,9 +280,9 @@ public class KeychainWrapper {
     public func setData(_ value: Data, forKey keyName: String, withAccessibility accessibility: KeychainItemAccessibility? = nil) -> Bool {
         var keychainQueryDictionary: [String:AnyObject] = self.setupKeychainQueryDictionaryForKey(keyName, withAccessibility: accessibility)
         
-        keychainQueryDictionary[SecValueData] = value
+        keychainQueryDictionary[SecValueData] = value as AnyObject?
         
-        let status: OSStatus = SecItemAdd(keychainQueryDictionary, nil)
+        let status: OSStatus = SecItemAdd(keychainQueryDictionary as CFDictionary, nil)
         
         if status == errSecSuccess {
             return true
@@ -302,7 +302,7 @@ public class KeychainWrapper {
         let keychainQueryDictionary: [String:AnyObject] = self.setupKeychainQueryDictionaryForKey(keyName, withAccessibility: accessibility)
 
         // Delete
-        let status: OSStatus = SecItemDelete(keychainQueryDictionary)
+        let status: OSStatus = SecItemDelete(keychainQueryDictionary as CFDictionary)
 
         if status == errSecSuccess {
             return true
@@ -319,11 +319,11 @@ public class KeychainWrapper {
         var keychainQueryDictionary: [String:AnyObject] = [SecClass:kSecClassGenericPassword]
         
         // Uniquely identify this keychain accessor
-        keychainQueryDictionary[SecAttrService] = self.serviceName
+        keychainQueryDictionary[SecAttrService] = self.serviceName as AnyObject?
         
         // Set the keychain access group if defined
         if let accessGroup = self.accessGroup {
-            keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
+            keychainQueryDictionary[SecAttrAccessGroup] = accessGroup as AnyObject?
         }
         
         let status: OSStatus = SecItemDelete(keychainQueryDictionary as CFDictionary)
@@ -369,7 +369,7 @@ public class KeychainWrapper {
         let updateDictionary = [SecValueData:value]
 
         // Update
-        let status: OSStatus = SecItemUpdate(keychainQueryDictionary, updateDictionary)
+        let status: OSStatus = SecItemUpdate(keychainQueryDictionary as CFDictionary, updateDictionary as CFDictionary)
 
         if status == errSecSuccess {
             return true
@@ -395,19 +395,19 @@ public class KeychainWrapper {
         }
         
         // Uniquely identify this keychain accessor
-        keychainQueryDictionary[SecAttrService] = self.serviceName
+        keychainQueryDictionary[SecAttrService] = self.serviceName as AnyObject?
         
         // Set the keychain access group if defined
         if let accessGroup = self.accessGroup {
-            keychainQueryDictionary[SecAttrAccessGroup] = accessGroup
+            keychainQueryDictionary[SecAttrAccessGroup] = accessGroup as AnyObject?
         }
         
         // Uniquely identify the account who will be accessing the keychain
         let encodedIdentifier: Data? = keyName.data(using: String.Encoding.utf8)
         
-        keychainQueryDictionary[SecAttrGeneric] = encodedIdentifier
+        keychainQueryDictionary[SecAttrGeneric] = encodedIdentifier as AnyObject?
         
-        keychainQueryDictionary[SecAttrAccount] = encodedIdentifier
+        keychainQueryDictionary[SecAttrAccount] = encodedIdentifier as AnyObject?
         
         return keychainQueryDictionary
     }
@@ -420,15 +420,15 @@ public extension KeychainWrapper {
     /// ServiceName is used for the kSecAttrService property to uniquely identify this keychain accessor. If no service name is specified, KeychainWrapper will default to using the bundleIdentifier.
     ///
     /// **Deprecated:** *Use KeychainWrapper.defaultKeychainWrapper().serviceName instead. Changing serviceName will not be supported in the future. Instead create a new KeychainWrapper instance with a custom service name.*
-    @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().serviceName instead. Changing serviceName will not be supported in the future. Instead create a new KeychainWrapper instance with a custom service name.")
-    public class var serviceName: String {
-        get {
-            return sharedKeychainWrapper.serviceName
-        }
-        set(newServiceName) {
-            sharedKeychainWrapper.serviceName = newServiceName
-        }
-    }
+//    @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().serviceName instead. Changing serviceName will not be supported in the future. Instead create a new KeychainWrapper instance with a custom service name.")
+//    public class var serviceName: String {
+//        get {
+//            return defaultKeychainWrapper().serviceName
+//        }
+//        set(newServiceName) {
+//            defaultKeychainWrapper().serviceName = newServiceName
+//        }
+//    }
     
     /// AccessGroup is used for the kSecAttrAccessGroup property to identify which Keychain Access Group this entry belongs to. This allows you to use the KeychainWrapper with shared keychain access between different applications.
     ///
@@ -437,58 +437,58 @@ public extension KeychainWrapper {
     /// This is a static property and only needs to be set once. To remove the access group property after one has been set, set this to an empty string.
     ///
     /// **Deprecated:** *Use KeychainWrapper.standardKeychainAccess().accessGroup instead. Changing accessGroup will not be supported in the future. Instead create a new KeychainWrapper instance with a custom accessGroup.*
-    @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().accessGroup instead. Changing accessGroup will not be supported in the future. Instead create a new KeychainWrapper instance with a custom accessGroup.")
-    public class var accessGroup: String? {
-        get {
-            return sharedKeychainWrapper.accessGroup
-        }
-        set(newAccessGroup) {
-            sharedKeychainWrapper.accessGroup = newAccessGroup
-        }
-    }
+//    @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().accessGroup instead. Changing accessGroup will not be supported in the future. Instead create a new KeychainWrapper instance with a custom accessGroup.")
+//    public class var accessGroup: String? {
+//        get {
+//            return defaultKeychainWrapper().accessGroup
+//        }
+//        set(newAccessGroup) {
+//            defaultKeychainWrapper().accessGroup = newAccessGroup
+//        }
+//    }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().hasValueForKey() instead.")
     public class func hasValueForKey(_ keyName: String) -> Bool {
-        return sharedKeychainWrapper.hasValueForKey(keyName)
+        return defaultKeychainWrapper().hasValueForKey(keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().stringForKey() instead.")
     public class func stringForKey(_ keyName: String) -> String? {
-        return sharedKeychainWrapper.stringForKey(keyName)
+        return defaultKeychainWrapper().stringForKey(keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().objectForKey() instead.")
     public class func objectForKey(_ keyName: String) -> NSCoding? {
-        return sharedKeychainWrapper.objectForKey(keyName)
+        return defaultKeychainWrapper().objectForKey(keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().dataForKey() instead.")
     public class func dataForKey(_ keyName: String) -> Data? {
-        return sharedKeychainWrapper.dataForKey(keyName)
+        return defaultKeychainWrapper().dataForKey(keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().dataRefForKey() instead.")
     public class func dataRefForKey(_ keyName: String) -> Data? {
-        return sharedKeychainWrapper.dataRefForKey(keyName)
+        return defaultKeychainWrapper().dataRefForKey(keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().setString() instead.")
     public class func setString(_ value: String, forKey keyName: String) -> Bool {
-        return sharedKeychainWrapper.setString(value, forKey: keyName)
+        return defaultKeychainWrapper().setString(value, forKey: keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().setObject() instead.")
     public class func setObject(_ value: NSCoding, forKey keyName: String) -> Bool {
-        return sharedKeychainWrapper.setObject(value, forKey: keyName)
+        return defaultKeychainWrapper().setObject(value, forKey: keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().setData() instead.")
     public class func setData(_ value: Data, forKey keyName: String) -> Bool {
-        return sharedKeychainWrapper.setData(value, forKey: keyName)
+        return defaultKeychainWrapper().setData(value, forKey: keyName)
     }
     
     @available(*, deprecated: 2.0, message: "Use KeychainWrapper.defaultKeychainWrapper().removeObjectForKey() instead.")
     public class func removeObjectForKey(_ keyName: String) -> Bool {
-        return sharedKeychainWrapper.removeObjectForKey(keyName)
+        return defaultKeychainWrapper().removeObjectForKey(keyName)
     }
 }

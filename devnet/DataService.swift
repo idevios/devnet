@@ -47,8 +47,9 @@ class DataService {
     
     // MARK: - Functions
     
-    func createFirebaseDBUser(uid: String, userData: Dictionary<String, String>) {
+    func createFirebaseDBUser(uid: String, userData: Dictionary<String, String>, username: Dictionary<String, String>) {
         REF_USERS.child(uid).updateChildValues(userData)
+        REF_USERS.child(uid).updateChildValues(username)
     }
     
     

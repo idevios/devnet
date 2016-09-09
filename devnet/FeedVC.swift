@@ -55,10 +55,15 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
     //MARK: - @IBActions
 
     @IBAction func signOutButtonPressed(_ sender: AnyObject) {
         let _ = KeychainWrapper.defaultKeychainWrapper().removeObjectForKey(KEY_UID)
+        let _ = KeychainWrapper.defaultKeychainWrapper().removeObjectForKey(KEY_USERNAME)
         try! FIRAuth.auth()?.signOut()
         self.dismiss(animated: true, completion: nil)
     }
@@ -98,9 +103,9 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     func postToFirebase(imageUrl: String) {
         let post: Dictionary<String, AnyObject> = [
-            "caption": captionTextField.text!,
-            "imageUrl": imageUrl,
-            "likes": 0
+            "caption": captionTextField.text! as AnyObject,
+            "imageUrl": imageUrl as AnyObject,
+            "likes": 0 as AnyObject
         ]
         
         //self.posts.removeAll()
@@ -138,7 +143,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = posts[indexPath.row]
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PostedCell") as? PostedCell {
-            if let image = FeedVC.imageCache.object(forKey: post.imageUrl) {
+            if let image = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
                 cell.configureCell(post: post, image: image)
                 return cell
             } else {
