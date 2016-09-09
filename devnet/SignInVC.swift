@@ -111,12 +111,11 @@ class SignInVC: UIViewController {
                     print("JEDI: BEFORE SEGUE - \(user.uid)")
                     self.performSegue(withIdentifier: "goToUsername", sender: user)
                 } else {
-                    if let usernameDict = snapshot.value as? Dictionary<String, String> {
-                        if let username = usernameDict["username"] {
-                            print("JEDI: - \(username)")
-                            let _ = KeychainWrapper.defaultKeychainWrapper().setString(username, forKey: KEY_USERNAME)
-                            self.performSegue(withIdentifier: "goToFeed", sender: nil)
-                        }
+                    print("JEDI: Username already created. ")
+                    if let username = snapshot.value as? String {
+                        print("JEDI: - Username: \(username)")
+                        let _ = KeychainWrapper.defaultKeychainWrapper().setString(username, forKey: KEY_USERNAME)
+                        self.performSegue(withIdentifier: "goToFeed", sender: nil)
                     }
                 }
             })
